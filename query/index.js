@@ -25,10 +25,10 @@ app.post('/events', (req, res) => {
     }
 
     if (type === 'CommentCreated') {
-        const { id, content, postId } = data;
+        const { id, content, postId, status } = data;
         const post = posts[postId];
         if (post) {
-            post.comments.push({ id, content });
+            post.comments.push({ id, content, status });
             console.log('Comment added to post in Query Service:', posts[postId]);
         } else {
             console.log(`Query Service: Post ${postId} not found, ignoring comment.`);
