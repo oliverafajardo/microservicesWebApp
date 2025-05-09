@@ -1,0 +1,48 @@
+import express from 'express'; //create a server
+import bodyParser from 'body-parser'; //parse the body of the request
+import { randomBytes } from 'crypto'; //generate random id for the comment
+import cors from 'cors';
+import axios from 'axios'; // Import axios
+
+const app = express(); //create a server
+app.use(bodyParser.json()); //parse the body of the request
+app.use(cors());
+
+const commentsByPostId = {};
+
+
+app.get('/posts/:id/comments', (req, res) => {
+    res.send(commentsByPostId[req.params.id] || []); //send the comments for the post
+});
+
+app.post('/posts/:id/comments', async (req, res) => {
+    const commentId = randomBytes(4).toString('hex');
+    const { content } = req.body;
+
+    const comments = commentsByPostId[req.params.id] || []; // this is the array of comments for the post
+    comments.push({ id: commentId, content })
+    commentsByPostId[req.params.id] = comments;
+    
+    await axios.post('http://localhost:4005/events', {
+        type: 'CommentCreated',
+        data: {
+            id: commentId,
+            content,
+            postId: req.params.id
+        }
+    })
+    res.status(201).send(comments);
+});
+
+// receives events from the event bus
+// updates the comments for the post
+app.post('/events', (req, res) => {
+    console.log('Received Event', req.body.type);
+    res.send({});
+});
+
+console.log('comments service');
+
+app.listen(4001, () => {
+    console.log('Comments Service Listening on 4001');
+});
