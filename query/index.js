@@ -35,6 +35,17 @@ app.post('/events', (req, res) => {
         }
     }
 
+    if (type === 'CommentUpdated') {
+        const { id, postId, status, content } = data;
+        const post = posts[postId];
+        const comment = post.comments.find(comment => {
+            return comment.id === id;
+        });
+        comment.status = status;
+        comment.content = content;
+        console.log('Comment updated in Query Service:', posts[postId]);
+    }
+
     console.log("Processed Event:", type);
     res.send({});
 });
