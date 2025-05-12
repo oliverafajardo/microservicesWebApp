@@ -1,0 +1,35 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels: 
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: oliverafajardo/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  selector:
+    app: comments
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 4001
+
+# ClusterIP is a type of service that exposes the service on a private IP address inside the cluster
+#eveng bus is listening on port 4005, so we will map that port to the service
+
+

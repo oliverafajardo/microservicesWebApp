@@ -15,7 +15,7 @@ spec:
       containers:
         - name: posts
           image: oliverafajardo/posts
----
+--- ##means end of confif block and start a new one  
 apiVersion: v1
 kind: Service
 metadata:
