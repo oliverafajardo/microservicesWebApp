@@ -19,7 +19,7 @@ app.get('/posts', (req, res) => {
 // Handles POST requests to /posts.
 // Generates an ID, stores the new post, emits a 'PostCreated' event,
 // and sends the created post back in the response.
-app.post('/posts', async (req, res) => {
+app.post('/posts/create', async (req, res) => {
     const id = randomBytes(4).toString('hex'); //k5hdhdhdwhwh
     const { title } = req.body; //grab the title from the request body
 
