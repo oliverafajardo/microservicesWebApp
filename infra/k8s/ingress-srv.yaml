@@ -1,17 +1,56 @@
+# apiVersion is the latest stable version for Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-srv
-spec: 
+  annotations:
+    # This annotation is required to enable regular expression matching in paths
+    # for the NGINX Ingress controller.
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # The 'kubernetes.io/ingress.class' annotation is deprecated and has been removed.
+    # The 'spec.ingressClassName' field is the modern replacement.
+spec:
+  # This field is the correct way to specify the Ingress controller.
   ingressClassName: nginx
-  rules: #first routing rule
+  rules:
     - host: posts.com
       http:
         paths:
-          - path: /posts
+          # This path is for a specific endpoint and is matched as a prefix.
+          # The syntax was already correct.
+          - path: /posts/create
             pathType: Prefix
             backend:
               service:
                 name: posts-clusterip-srv
                 port:
                   number: 4000
+
+          # This path uses a regular expression to capture a post ID and match
+          # its comments. 'pathType' is set to 'ImplementationSpecific' to
+          # enable regex matching.
+          - path: /posts/(.*)/comments
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 4001
+
+          # This path acts as a general catch-all for /posts. It should be last
+          # to ensure more specific paths are matched first.
+          - path: /posts
+            pathType: Prefix
+            backend:
+              service:
+                name: query-srv
+                port:
+                  number: 4002
+
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
