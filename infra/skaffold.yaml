@@ -1,0 +1,79 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+
+# ---
+# Section 1: DEPLOYMENT
+# Tell Skaffold how to deploy the application to Kubernetes.
+# ---
+deploy:
+  # USE the "kubectl" command to apply manifests.
+  kubectl:
+    manifests:
+      # FIND all Kubernetes YAML files inside the "./infra/k8s/" folder
+      # and APPLY them to the cluster.
+      - ./infra/k8s/*.yaml
+    
+# ---
+# Section 2: BUILD
+# Tell Skaffold how to build the container images for each service.
+# ---
+build:
+  # SET Build Method to "local" (use the local Docker daemon).
+  local:
+    # SET Push Images to "false" (do not push to a remote registry).
+    # This is ideal for local development.
+    push: false
+
+  # Define the list of services (artifacts) to build.
+  artifacts:
+    # ARTIFACT 1: "oliverafajardo/client"
+    - image: oliverafajardo/client
+      # Find the source code in the "./client" directory.
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      # Watch for changes and Hot-Reload them into the running container.
+      sync:   
+        manual: 
+          # If any ".js" file inside the "src" sub-directory changes...
+          - src: 'src/**/*.js'
+            # ...copy the changed file directly into the container's working directory.
+            dest: .
+
+    # ARTIFACT 2: "oliverafajardo/comments"
+    - image: oliverafajardo/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:   
+        manual: 
+          # If any ".js" file in the root directory changes...
+          - src: '*.js'
+            dest: .
+
+    # ARTIFACT 3: "oliverafajardo/event-bus"
+    - image: oliverafajardo/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:   
+        manual: 
+          - src: '*.js'
+            dest: .
+    
+    # ARTIFACT 4: "oliverafajardo/moderation"
+    - image: oliverafajardo/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:   
+        manual: 
+          - src: '*.js'
+            dest: .
+
+    # ARTIFACT 5: "oliverafajardo/posts"
+    - image: oliverafajardo/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:   
