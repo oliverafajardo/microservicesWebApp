@@ -57,11 +57,23 @@ app.post('/events', (req, res) => {
 app.listen(4002, async () =>  {
     console.log('Query Service Listening on 4002');
 
-    const res = await axios.get('http://event-bus-srv:4005/events');
+    // Retry logic for fetching events
+    const fetchEvents = async (retries = 5, delay = 2000) => {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const res = await axios.get('http://event-bus-srv:4005/events');
+                for (let event of res.data) {
+                    console.log('Processing event:', event.type);
+                    handleEvent(event.type, event.data);
+                }
+                return;
+            } catch (err) {
+                console.log(`Failed to fetch events, retrying in ${delay / 1000}s...`);
+                await new Promise(res => setTimeout(res, delay));
+            }
+        }
+        console.log('Failed to fetch events after retries.');
+    };
 
-    for (let event of res.data) {
-        console.log('Processing event:', event.type);
-
-        handleEvent(event.type, event.data);
-    }
+    await fetchEvents();
 });
