@@ -15,6 +15,7 @@ spec:
       containers:
         - name: client
           image: oliverafajardo/client
+          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service

@@ -15,6 +15,7 @@ spec:
       containers:
         - name: query
           image: oliverafajardo/query
+          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service

@@ -15,6 +15,7 @@ spec:
       containers:
         - name: moderation
           image: oliverafajardo/moderation
+          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service

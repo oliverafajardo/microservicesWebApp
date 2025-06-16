@@ -1,20 +1,9 @@
+# --- Skaffold Configuration Plan ---
 apiVersion: skaffold/v4beta7
 kind: Config
 
 # ---
-# Section 1: DEPLOYMENT
-# Tell Skaffold how to deploy the application to Kubernetes.
-# ---
-deploy:
-  # USE the "kubectl" command to apply manifests.
-  kubectl:
-    manifests:
-      # FIND all Kubernetes YAML files inside the "./infra/k8s/" folder
-      # and APPLY them to the cluster.
-      - ./infra/k8s/*.yaml
-    
-# ---
-# Section 2: BUILD
+# Section 1: BUILD
 # Tell Skaffold how to build the container images for each service.
 # ---
 build:
@@ -77,3 +66,34 @@ build:
       docker:
         dockerfile: Dockerfile
       sync:   
+        manual: 
+          - src: '*.js'
+            dest: .
+
+    # ARTIFACT 6: "oliverafajardo/query"
+    - image: oliverafajardo/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+
+# ---
+# Section 2: MANIFESTS
+# Tell Skaffold WHAT to deploy.
+# ---
+manifests:
+  # We are using raw Kubernetes YAML files.
+  rawYaml:
+    # FIND all Kubernetes YAML files inside the "./infra/k8s/" folder.
+    - ./infra/k8s/*.yaml
+
+# ---
+# Section 3: DEPLOYMENT
+# Tell Skaffold HOW to deploy the application to Kubernetes.
+# ---
+deploy:
+  # USE the "kubectl" command to apply the manifests defined in the section above.
+  kubectl: {}
