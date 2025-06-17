@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  #selector is used to select the pods to be managed by the deployment
+  selector:
+    matchLabels:
+      app: auth
+  #how to create each individual pod
+  template:
+    metadata:
+      labels: 
+        app: auth
+    spec:
+      containers:
+        - name: auth 
+          image: oliverafajardo/auth
+
+--- 
+#service for the auth deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec: 
+  selector:
+    app: auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+ 

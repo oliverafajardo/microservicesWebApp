@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+k8s/*.env
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+
+# Docker
+.docker/
+**/Dockerfile.dockerignore
+
+# Temporary files
+tmp/
+temp/
+
+# Debug
+.debug/
+
+# Production build
+build/
+dist/
+
+# Kubernetes
+infra/k8s/secrets/
+infra/k8s/*.yaml.bak
+infra/k8s/*.yaml.tmp
+
+# Microservices specific
+auth/dist/
+auth/build/
+auth/.env
+auth/node_modules/
+
+# Local development
+*.local
+*.dev
+*.test
+*.prod
+
+# Skaffold
+skaffold.yaml.bak
+skaffold.yaml.tmp
+
+# Minikube
+.minikube/
+
+# Terraform (if you plan to use it)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraformrc
+terraform.rc
