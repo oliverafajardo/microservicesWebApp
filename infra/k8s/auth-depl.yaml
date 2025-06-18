@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: auth 
-          image: oliverafajardo/auth
+          image: us.gcr.io/ticketing-dev-463223/auth
           ports:
             - containerPort: 3000
 
