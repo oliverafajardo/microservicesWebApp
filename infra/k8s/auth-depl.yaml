@@ -17,6 +17,8 @@ spec:
       containers:
         - name: auth 
           image: oliverafajardo/auth
+          ports:
+            - containerPort: 3000
 
 --- 
 #service for the auth deployment

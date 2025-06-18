@@ -1,0 +1,41 @@
+# PSEUDOCODE COMMENT:
+# This Skaffold config uses Google Cloud Build as the default builder for all images.
+# To build images locally (using your Docker daemon), use: skaffold dev --profile local
+# No profile is needed for Google Cloud Build, as it is the default.
+
+# --- DEFAULT: GOOGLE CLOUD BUILD ---
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: ticketing
+build:
+  googleCloudBuild:
+    projectId: ticketing-dev-463223
+  artifacts:
+    - image: us.gcr.io/ticketing-dev-463223/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+
+# --- PROFILE: LOCAL DOCKER BUILD ---
+profiles:
+  - name: local
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: us.gcr.io/ticketing-dev-463223/auth
+          context: auth #project directory
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+              - src: 'src/**/*.ts'
+                dest: .
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
