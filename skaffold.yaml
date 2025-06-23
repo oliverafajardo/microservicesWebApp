@@ -20,8 +20,6 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-        infer:
-          - 'package.json'
 
 # --- PROFILE: LOCAL DOCKER BUILD ---
 profiles:
@@ -38,8 +36,6 @@ profiles:
             manual:
               - src: 'src/**/*.ts'
                 dest: .
-            infer:
-              - 'package.json'
 manifests:
   rawYaml:
     - ./infra/k8s/*
