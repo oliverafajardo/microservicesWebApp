@@ -3,6 +3,8 @@ import 'express-async-errors';
 import { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
+
 
 import { currentUserRouter } from "./routes/current-user";
 import { signupRouter } from "./routes/signup";
@@ -12,7 +14,14 @@ import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 
 
-const app = express();  
+const app = express();
+
+app.set('trust proxy', true); //traffic is proxied through nginx, make sure express knows that it is secure from nginx
+
+app.use(cookieSession({
+    signed: false, //do not encrypt the cookie
+    secure: true
+}));
 
 app.use(bodyParser.json());
 
