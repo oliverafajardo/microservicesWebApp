@@ -2,6 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
+// send bakc header tells users browser to delete the cookie
 router.post("/api/users/signout", (req, res) => {
     req.session = null;
     res.send({})
