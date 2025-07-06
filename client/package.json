@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
-    
+    "dev": "CHOKIDAR_USEPOLLING=true next"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bootstrap": "^5.3.7",
     "next": "^15.3.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
 }
+
