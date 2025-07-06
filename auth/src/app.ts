@@ -19,7 +19,7 @@ app.set('trust proxy', true); //traffic is proxied through nginx, make sure expr
 
 app.use(cookieSession({
     signed: false, //do not encrypt the cookie
-    secure: true
+    secure: process.env.NODE_ENV !== 'test' //only use secure in production
 }));
 
 app.use(bodyParser.json());

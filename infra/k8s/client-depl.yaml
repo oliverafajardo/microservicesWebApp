@@ -1,0 +1,45 @@
+# this file is used to deploy the client service to the kubernetes cluster
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  #selector is used to select the pods to be managed by the deployment
+  selector:
+    matchLabels:
+      app: client
+  #how to create each individual pod
+  template:
+    metadata:
+      labels: 
+        app: client
+    spec:
+      containers:
+        - name: client 
+          image: us.gcr.io/ticketing-dev-463223/client
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+          ports:
+            - containerPort: 3000
+
+--- 
+#service for the auth deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec: 
+  selector:
+    app: client
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+ 

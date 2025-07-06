@@ -1,12 +1,17 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { app } from "../app";
+import request from "supertest";
 
 
 //before test start up will create a new instance of the mongo server
 //before each test will connect to the mongo server
 //after each test will close the connection to the mongo server
 //after all tests will stop the mongo server
+
+declare global {
+    var signin: () => Promise<string[]>;
+}
 
 let mongo: any;
 
@@ -33,3 +38,19 @@ afterAll(async () => {
     }
     await mongoose.connection.close();
 });
+
+global.signin = async () => {
+    const email = "test@test.com";
+    const password = "password";
+
+    const response = await request(app)
+        .post("/api/users/signup")
+        .send({ email, password })
+        .expect(201);
+
+    const cookie = response.get("Set-Cookie");
+    if (!cookie) {
+        throw new Error("No cookie returned from signup");
+    }
+    return cookie;
+};
