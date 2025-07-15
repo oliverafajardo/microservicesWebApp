@@ -29,7 +29,7 @@ spec:
             - containerPort: 3000
 
 --- 
-#service for the auth deployment
+#service for the client deployment
 apiVersion: v1
 kind: Service
 metadata:

@@ -17,17 +17,31 @@ build:
       docker:
         dockerfile: Dockerfile
       sync:
-        manual:
-          - src: 'src/**/*.ts'
-            dest: .
+        infer:
+          - '**/*.js'
+          - '**/*.ts'
+          - '**/*.json'
+          - '**/*.env'
     - image: us.gcr.io/ticketing-dev-463223/client
       context: client
       docker:
         dockerfile: Dockerfile
       sync:
-        manual:
-          - src: 'pages/**/*.js'
-            dest: .
+        infer:
+          - '**/*.js'
+          - '**/*.jsx'
+          - '**/*.ts'
+          - '**/*.tsx'
+          - '**/*.css'
+          - '**/*.scss'
+          - '**/*.html'
+          - 'public/**/*'
+          - 'pages/**/*'
+          - 'components/**/*'
+          - 'styles/**/*'
+          - 'lib/**/*'
+          - 'app/**/*'
+          - '*.env'
 
 # --- PROFILE: LOCAL DOCKER BUILD ---
 profiles:
