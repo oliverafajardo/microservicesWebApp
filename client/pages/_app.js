@@ -1,12 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import buildClient from '../api/build-client';
+import Header from '../components/header';
 
 //custom app component
 const AppComponent = ({ Component, pageProps, currentUser }) => {
-    return <div>
-        <h1> Header {currentUser.email} </h1>
+    return (
+    <div>
+        <Header currentUser={currentUser} />
         <Component {...pageProps} />
-    </div>;
+    </div>  
+    );
 }  
 //when we navigate to a age next willl import component and wraps it in app
 //banana component, or index component, or any other component will be wrapped in app component
@@ -17,7 +20,7 @@ AppComponent.getInitialProps = async (appContext) => {
 
     let pageProps = {};
     if (appContext.Component.getInitialProps) {
-        pageProps = await appContext.Component.getInitialProps(appContext.ctx); //individual page
+         pageProps = await appContext.Component.getInitialProps(appContext.ctx); //individual page
     }
 
     return {
