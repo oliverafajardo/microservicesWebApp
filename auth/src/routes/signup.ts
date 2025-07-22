@@ -1,10 +1,8 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
-
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest, BadRequestError } from "@sgtickets510/common";
 import { User } from "../models/user";
-import { BadRequestError } from "../../../common/src/errors/bad-request-error";
 
 const router = express.Router();
 
@@ -17,7 +15,7 @@ router.post("/api/users/signup", [
     .isLength({min: 4, max: 20})
     .withMessage('password must be between 4 and 20 characters')
 ], 
-validateRequest, //added before because we want to validate the request before we save the user to the database
+validateRequest as any, //added before because we want to validate the request before we save the user to the database
 async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });

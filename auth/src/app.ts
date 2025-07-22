@@ -9,8 +9,8 @@ import { currentUserRouter } from "./routes/current-user";
 import { signupRouter } from "./routes/signup";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "../../common/src/errors/not-found-error";
+import { errorHandler, NotFoundError } from "@sgtickets510/common";
+import type { ErrorRequestHandler } from 'express';
 
 
 const app = express();
@@ -33,7 +33,7 @@ app.all('*', async (req: Request, res: Response) => {
     throw new NotFoundError();
 });
 
-app.use(errorHandler);
+app.use(errorHandler as unknown as ErrorRequestHandler);
 
 
 export { app };
