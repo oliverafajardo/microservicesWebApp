@@ -10,7 +10,7 @@ import { signupRouter } from "./routes/signup";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
+import { NotFoundError } from "../../common/src/errors/not-found-error";
 
 
 const app = express();
