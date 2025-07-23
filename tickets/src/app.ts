@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import 'express-async-errors';
 import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError, currentUser } from "@sgtickets510/common";
 import type { ErrorRequestHandler } from 'express';
@@ -21,7 +20,8 @@ app.use(currentUser as unknown as express.RequestHandler);
 app.use(createTicketRouter);
 
 
-app.all('*', async (req: Request, res: Response) => {
+// Catch-all route for unmatched paths - using Express 5.x wildcard pattern
+app.all('{*splat}', async (req: Request, res: Response) => {
     throw new NotFoundError();
 });
 
