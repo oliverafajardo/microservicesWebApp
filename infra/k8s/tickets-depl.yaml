@@ -1,25 +1,25 @@
-# this file is used to deploy the client service to the kubernetes cluster
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-depl
+  name: tickets-depl
 spec:
   replicas: 1
   #selector is used to select the pods to be managed by the deployment
   selector:
     matchLabels:
-      app: client
+      app: tickets
   #how to create each individual pod
   template:
     metadata:
       labels: 
-        app: client
+        app: tickets
     spec:
       containers:
-        - name: client 
-          image: us.gcr.io/ticketing-dev-463223/client
+        - name: tickets 
+          image: us.gcr.io/ticketing-dev-463223/tickets
           env:
+            - name: MONGO_URI
+              value: 'mongodb://tickets-mongo-srv:27017/tickets'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -36,16 +36,16 @@ spec:
             - containerPort: 3000
 
 --- 
-#service for the client deployment
+#service for the tickets deployment
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-srv
+  name: tickets-srv
 spec: 
   selector:
-    app: client
+    app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3000
       targetPort: 3000
