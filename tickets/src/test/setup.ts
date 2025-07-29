@@ -17,6 +17,9 @@ declare global {
 let mongo: any;
 
 beforeAll(async () => {
+    process.env.JWT_KEY = "asdf";
+    process.env.NODE_ENV = "test";
+    
     mongo = await MongoMemoryServer.create();
     const mongoUri = mongo.getUri();
 
@@ -24,7 +27,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-    process.env.JWT_KEY = "asdf";
     if (mongoose.connection.db) {
         const collections = await mongoose.connection.db.collections();
         for (let collection of collections) {
@@ -43,7 +45,7 @@ afterAll(async () => {
 global.signin = async () => {
    //build a jwt payload {id, email}
    const payload = {
-    id: 'dhdjffkfdj ',
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com'
    }
    //create the jwt
@@ -54,7 +56,6 @@ global.signin = async () => {
    
    //turn that session into JSON
    const sessionJSON = JSON.stringify(session)
-
 
    //take JSON and encode it as base64
    const base64 = Buffer.from(sessionJSON).toString('base64')
