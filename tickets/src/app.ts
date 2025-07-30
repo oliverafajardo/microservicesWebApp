@@ -15,7 +15,7 @@ app.set('trust proxy', true); //traffic is proxied through nginx, make sure expr
 app.use(express.json());
 
 app.use(cookieSession({
-    name: 'express:sess', // Explicitly set cookie name to match test
+    name: 'session', // Match the actual cookie name being set
     signed: false, //do not encrypt the cookie
     secure: process.env.NODE_ENV !== 'test' //only use secure in production
 }));

@@ -24,7 +24,7 @@ spec:
                 name: tickets-srv
                 port:
                   number: 3000
-          - path: /?(.*)
+          - path: /?(.*) 
             pathType: ImplementationSpecific
             backend:
               service:
